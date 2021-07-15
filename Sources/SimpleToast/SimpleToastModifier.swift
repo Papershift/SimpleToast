@@ -16,14 +16,14 @@ public enum SimpleToastModifierType {
 
 
 protocol SimpleToastModifier: ViewModifier {
-    var showToast: Bool { get set }
+    var showToast: Binding<Bool> { get set }
     var options: SimpleToastOptions? { get set }
 }
 
 
 
 struct SimpleToastSlide: SimpleToastModifier {
-    @Binding var showToast: Bool
+    var showToast: Binding<Bool>
     var options: SimpleToastOptions?
 
     private var transitionEdge: Edge {
@@ -53,24 +53,24 @@ struct SimpleToastSlide: SimpleToastModifier {
 
 
 struct SimpleToastFade: SimpleToastModifier {
-    @Binding var showToast: Bool
+    var showToast: Binding<Bool>
     var options: SimpleToastOptions?
     
     func body(content: Content) -> some View {
         content
             .transition(AnyTransition.opacity.animation(options?.animation ?? .linear))
-            .opacity(showToast ? 1 : 0)
+            .opacity(showToast.wrappedValue ? 1 : 0)
     }
 }
 
 
 struct SimpleToastScale: SimpleToastModifier {
-    @Binding var showToast: Bool
+    var showToast: Binding<Bool>
     var options: SimpleToastOptions?
 
     func body(content: Content) -> some View {
         content
             .transition(AnyTransition.scale.animation(options?.animation ?? .linear))
-            .opacity(showToast ? 1 : 0)
+            .opacity(showToast.wrappedValue ? 1 : 0)
     }
 }
